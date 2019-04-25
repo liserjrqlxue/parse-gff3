@@ -27,7 +27,7 @@ type GFF3 struct {
 	Attributes map[string]string
 }
 
-func file2GFF3array(fileName string) (gff3Array []GFF3) {
+func File2GFF3array(fileName string) (gff3Array []GFF3) {
 	file, err := os.Open(fileName)
 	simple_util.CheckErr(err)
 	defer simple_util.DeferClose(file)
