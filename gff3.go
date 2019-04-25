@@ -23,7 +23,7 @@ type GFF3 struct {
 	Type       string
 	Start      uint64
 	End        uint64
-	Score      float64
+	Score      string
 	Strand     string `+:"positive strand (relative to the landmark)",-:"minus strand",.:"not stranded",?:"unknown"`
 	Phase      string
 	Attributes map[string]string
@@ -64,9 +64,7 @@ func File2GFF3array(fileName string) (gff3Array []GFF3) {
 		end, err := strconv.Atoi(array[4])
 		simple_util.CheckErr(err)
 		item.End = uint64(end)
-		score, err := strconv.ParseFloat(array[5], 64)
-		simple_util.CheckErr(err)
-		item.Score = score
+		item.Score = array[5]
 		item.Strand = array[6]
 		item.Phase = array[7]
 		attributes := strings.Split(array[8], ";")
