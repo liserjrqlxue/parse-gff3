@@ -14,7 +14,7 @@ import (
 // regexp
 var (
 	isGz      = regexp.MustCompile(`\.gz$`)
-	isComment = regexp.MustCompile(`^##`)
+	isComment = regexp.MustCompile(`^#`)
 )
 
 type GFF3 struct {
