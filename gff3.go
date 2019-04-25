@@ -2,6 +2,7 @@ package parseGff3
 
 import (
 	"bufio"
+	"compress/gzip"
 	"github.com/liserjrqlxue/simple-util"
 	"log"
 	"os"
@@ -12,7 +13,8 @@ import (
 
 // regexp
 var (
-	isComment = regexp.MustCompile(`^#`)
+	isGz      = regexp.MustCompile(`\.gz$`)
+	isComment = regexp.MustCompile(`^##`)
 )
 
 type GFF3 struct {
@@ -32,7 +34,17 @@ func File2GFF3array(fileName string) (gff3Array []GFF3) {
 	simple_util.CheckErr(err)
 	defer simple_util.DeferClose(file)
 
-	scanner := bufio.NewScanner(file)
+	var scanner *bufio.Scanner
+	if isGz.MatchString(fileName) {
+		gr, err := gzip.NewReader(file)
+		simple_util.CheckErr(err)
+		defer simple_util.DeferClose(gr)
+
+		scanner = bufio.NewScanner(gr)
+	} else {
+		scanner = bufio.NewScanner(file)
+	}
+
 	for scanner.Scan() {
 		line := scanner.Text()
 		if isComment.MatchString(line) {
